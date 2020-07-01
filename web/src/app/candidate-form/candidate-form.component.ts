@@ -23,7 +23,11 @@ export class CandidateFormComponent implements OnInit {
   model: any = {};
   type: String;
   file : any
-  resumeDetails : any
+  resumeDetails : any;
+  idValidateIdType : boolean = false;
+  idValidateIdNo : boolean = false
+  aadharId : number
+  panId : number
 
   constructor(private modalService: NgbModal,
     private router: Router,
@@ -97,7 +101,7 @@ export class CandidateFormComponent implements OnInit {
           }
 
         },(error : HttpErrorResponse)=>{
-          console.log(error)
+          
           this.router.navigate(['error', 500]);
         })
         
@@ -127,8 +131,32 @@ export class CandidateFormComponent implements OnInit {
 
     getIdProofType(){
       this.service.getAllIdProofTypes().subscribe((res : any)=>{
-        this.idProofTypes = res.payload.data
+        
+        this.idProofTypes = res.payload.data;
+        // var idProofTypeCopy = JSON.parse(JSON.stringify(this.idProofTypes));
+
+       
+        if (this.idProofTypes){
+          this.idProofTypes.forEach((idType, index)=>{
+            
+            if (idType.name == "Aadhar Card"){
+              
+              this.aadharId = idType.id;
+              
+            }
+            else if (idType.name == "Pan Card"){
+              
+              this.panId = idType.id;
+            }
+          })
+        }
       })
+      
+      
+    }
+
+    structureAadhar(a, b): void{
+      
     }
 
   uploadResume(event){
@@ -139,8 +167,7 @@ export class CandidateFormComponent implements OnInit {
 
   validateApplication(applicationObj : ICandidate){
   if (applicationObj.nationality == "Indian"){
-    
-    if (this.idProofTypes[0].id != applicationObj.idProofTypeId ){
+    if (this.aadharId != applicationObj.idProofTypeId ){
        return {
         success: false,
         payload: {    
@@ -196,7 +223,7 @@ export class CandidateFormComponent implements OnInit {
           }
         } },
       error=>{
-        console.log(error)
+        
       })
     }
     else{
@@ -213,4 +240,13 @@ export class CandidateFormComponent implements OnInit {
       modalRef.close();
     })
   }
+
+  func(e){
+    
+    document.getElementById('iban').addEventListener('input', function () {
+      e.target.value = e.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
+    });
+  }
+
+  
 }

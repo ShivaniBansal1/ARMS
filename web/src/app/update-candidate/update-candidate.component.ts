@@ -21,6 +21,11 @@ export class UpdateCandidateComponent implements OnInit {
   idProofTypes : any;
   numbersInYears : Array<number>;
   numbersInMonths : Array<number>;
+  aadharId : number
+  panId : number
+
+  @Input()
+  formType : string
 
   @Input()
   applicationId : number
@@ -45,11 +50,28 @@ export class UpdateCandidateComponent implements OnInit {
   }
 
   getIdProofType(){
-    
     this.service.getAllIdProofTypes().subscribe((res : any)=>{
-      this.idProofTypes = res.payload.data
-    
+      
+      this.idProofTypes = res.payload.data;
+      // var idProofTypeCopy = JSON.parse(JSON.stringify(this.idProofTypes));
+
+     
+      if (this.idProofTypes){
+        this.idProofTypes.forEach((idType, index)=>{
+          
+          if (idType.name == "Aadhar Card"){
+            
+            this.aadharId = idType.id;
+          }
+          else if (idType.name == "Pan Card"){
+            
+            this.panId = idType.id;
+          }
+        })
+      }
     })
+    
+    
   }
 
   validateApplication(applicationObj : ICandidate){

@@ -147,11 +147,14 @@ export class CandidateComponent  {
     }
 
     updateCandidate(data){
+      
       const modalRef: NgbModalRef = this.modalService.open(UpdateCandidateComponent);
       modalRef.componentInstance.applicationId = data.data.id;
+      modalRef.componentInstance.formType = data.formType;
       modalRef.componentInstance.closeModal.subscribe((rerender: boolean) => {
         modalRef.close();
       });
+      this.getCandidates()
     }
 
     shortlisting(data: any): void{
@@ -162,7 +165,7 @@ export class CandidateComponent  {
           this.getCandidates();
         }
       }, error =>{
-        console.log(error)
+        
       })
     }
     openResponseModal(res : IResponse){
