@@ -301,4 +301,10 @@ export class AppServicesService {
       ...this.httpOptions,
     });
   }
+
+  getAllCriteriaTypes(): Observable<IResponse> {
+    return this.http.get<any>(`${HOST}/api/CriteriaType`, {
+      ...this.httpOptions,
+    });
+  }
 }

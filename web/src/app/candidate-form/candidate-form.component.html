@@ -5,7 +5,7 @@
         <form name="form" #f="ngForm" (ngSubmit)="createApplication(f)" >
   
           <div class="form-group">
-            <label for="appliedForJdId">Applied for JD<span class="asterick">*</span></label>
+            <label for="appliedForJdId">Applied for Job ID<span class="asterick">*</span></label>
             <input [readOnly]="type == 'progressTracker' || 'candidate'" type="text" name="appliedForJdId" class="form-control" [(ngModel)]="model.appliedForJdId" 
              placeholder="JD referral" #appliedForJdId="ngModel" id="appliedForJdId"
              [ngClass]="{ 'is-invalid': f.submitted && appliedForJdId.invalid }">

@@ -83,7 +83,8 @@ namespace Arms.Api.Controllers
             @"<a href ='http://localhost:4200/candidateForm/"+ jdObject.code +"'>" + @"Click here to apply.</a>
              <p> Regards,</p>
              <p> HR,</p>
-             <p> Cybergroup,B - 9, Block B, Sector 3, Noida, Uttar Pradesh 201301 </p>
+             <p> Cyber Group India Private Limited <p>
+             <p> B-9, Block B, Sector 3, Noida, Uttar Pradesh 201301 </p>
              <p> Thanks </p>
             <img src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRCUuWWhu0HByWgdDAp2cA1TDf-a_
                    FpjUA_DFbRt33DViY9tNDH & usqp = CAU'width='150'height='150'>
