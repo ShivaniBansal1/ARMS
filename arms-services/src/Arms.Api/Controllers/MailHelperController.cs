@@ -42,12 +42,13 @@ namespace Arms.Api.Controllers
         public void MailFunction( string emailHtmlBody,string[] emailList)
         {
 
-            var credentials = new System.Net.NetworkCredential("mongmawchetna@gmail.com", "mongmaw.chetna@21ok");
+            var credentials = new System.Net.NetworkCredential("your email here", "your password here");
 
             // Mail message
              mail = new MailMessage()
             {
-                From = new MailAddress("mongmawchetna@gmail.com"),
+                From = new MailAddress("your email here"),
+                From = new MailAddress("your email here"),
                 Subject = "Jd info",
                 IsBodyHtml = true
             };
