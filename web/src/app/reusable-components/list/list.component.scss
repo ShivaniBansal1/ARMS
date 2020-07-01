@@ -58,7 +58,6 @@ ngb-pagination ::ng-deep ul > li:not(.active) > a {
 
 .paginationDiv ::ng-deep{
     .page-item.active .page-link {
-        // z-index: 1;
         color: #fff;
         background-color:#FC4C02;
         border-color: #FC4C02;
@@ -81,7 +80,6 @@ ngb-pagination ::ng-deep ul > li:not(.active) > a {
 
 .mobileView ::ng-deep{
     .btn-link {
-        //font-weight: 400;
         color: #212529;
         text-decoration: none;
     }
@@ -155,13 +153,37 @@ th{
     color: #fff;
 }
 
-// .customised-dropdown-parent{
-//     transform: translateY(0);
-//     transition: all .5s ease-in;
-// }
-
 .change-color{
     &:hover{
         color: #FC4C02;
     }   
+}
+
+td{
+    margin-left: 1em;
+}
+
+.shortlisting{
+    color: #F04F23;
+}
+.shortlisted{
+    color:#28a745;
+    
+}
+
+.notShortlisted{
+    color: rgb(201, 5, 5);
+}
+
+.desktopView{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.shortlistedBack{
+    background-color: #F0FFFF;
+}
+
+.notShortlistedback{
+    background-color: #FFE4E1 ;
 }

@@ -15,10 +15,9 @@ export class JobService {
 
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-     Authorization: localStorage.getItem("Authorized")
-       //hard code token here
-   
+        Authorization: localStorage.getItem("Authorized")
   });
+  
   httpOptions = {
     headers: this.headers
   };
@@ -45,6 +44,11 @@ export class JobService {
         emailList: mailingList
        }
       return this.http.post<IResponse>(`${HOST}/api/jdEmail`, mailObj, { ...this.httpOptions });
+    }
+    searchJd(character:string){
+
+      return this.http.get<IResponse>(`${HOST}/api/jobDescription/search?keyword=${character}`,{ ...this.httpOptions });
+
     }
     
 

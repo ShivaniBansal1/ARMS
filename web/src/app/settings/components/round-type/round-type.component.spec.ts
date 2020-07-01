@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RoundTypeComponent } from './round-type.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,7 +11,7 @@ describe('RoundTypeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RoundTypeComponent ],
-      imports: [ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule]
+      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule]
     
     })
     .compileComponents();

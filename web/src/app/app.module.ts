@@ -1,3 +1,4 @@
+import { CreateInterviewComponent } from './create-interview/create-interview.component';
 import { RoundComponent } from './round/round.component';
 import { UpdateInterviewComponent } from './update-interview/update-interview.component';
 import { CandidateAssessmentFormComponent } from "./candidate-assessment/components/candidate-assessment-form/candidate-assessment-form.component";
@@ -6,7 +7,7 @@ import { RoundTypeComponent } from "./settings/components/round-type/round-type.
 import { HrInterviewAssessementComponent } from "./hr-interview-assessement/hr-interview-assessement.component";
 import { CandidateAssessmentComponent } from "./candidate-assessment/containers/candidate-assessment.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA  } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { MsalInterceptor, MsalModule } from "@azure/msal-angular";
@@ -17,12 +18,10 @@ import { FileUploadModule } from "ng2-file-upload";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { CandidateFormComponent } from "./candidate-form/candidate-form.component";
-import { CreateInterviewComponent } from "./create-interview/create-interview.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { EmployeeFormComponent } from "./employee/components/employee-form/employee-form.component";
 import { EmployeeUploadComponent } from "./employee/components/employee-upload/employee-upload.component";
 import { EmployeeComponent } from "./employee/containers/employee/employee.component";
-import { HrComponent } from "./hr/hr.component";
 import { JdFormComponent } from "./jd-form/jd-form.component";
 import { JdPdfComponent } from "./jd-form/jd-pdf/jd-pdf.component";
 import { JdListComponent } from "./jd-list/jd-list.component";
@@ -48,6 +47,9 @@ import { InterviewTrackerComponent } from "./interview-tracker/interview-tracker
 import { AnalyticsComponent } from "./dashboard/analytics/analytics.component";
 import { StatsComponent } from "./dashboard/stats/stats.component";
 import { CandidateDescriptionComponent } from "./candidate-assessment/components/candidate-description/candidate-description.component";
+import { InterviewDetailComponent } from './interview-detail/interview-detail.component';
+import { UpdateCandidateComponent } from './update-candidate/update-candidate.component';
+import { NgxSpinnerService, NgxSpinnerModule } from "ngx-spinner";
 
 const isIE =
   window.navigator.userAgent.indexOf("MSIE ") > -1 ||
@@ -70,7 +72,6 @@ const isIE =
     EmployeeComponent,
     EmployeeUploadComponent,
     ModalComponent,
-    HrComponent,
     JdListComponent,
     ScheduleInterviewComponent,
     LocationComponent,
@@ -99,13 +100,16 @@ const isIE =
     ApplicationStatusComponent,
     CandidateAssessmentComponent,
     HrInterviewAssessementComponent,
+    InterviewDetailComponent,
     InterviewTrackerComponent,
     CandidateDescriptionComponent,
     DashboardComponent,
     StatsComponent,
     AnalyticsComponent,
+    UpdateCandidateComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     FileUploadModule,
     MDBBootstrapModule.forRoot(),
     ReactiveFormsModule,
@@ -115,6 +119,7 @@ const isIE =
     HttpClientModule,
     NgbModule,
     ChartsModule,
+    NgxSpinnerModule,
     HttpClientModule,
     ProgressHttpModule,
     MsalModule.forRoot(
@@ -132,7 +137,8 @@ const isIE =
       },
       {
         popUp: !isIE,
-        consentScopes: ["user.read", "openid", "profile","calenders.read"],
+        consentScopes: ["user.read", "openid", "profile","calendars.read","calendars.read.shared",
+                        "calendars.readwrite","calendars.readwrite.shared"],
         unprotectedResources: [],
         protectedResourceMap: [
           ["https://graph.microsoft.com/v1.0/me", ["user.read"]],
@@ -149,13 +155,15 @@ const isIE =
       multi: true,
     },
   ],
-  exports: [ListComponent],
+  exports: [ListComponent, InterviewDetailComponent],
   entryComponents: [
     EmployeeFormComponent,
     ModalComponent,
     EmployeeUploadComponent,
     EmailListModalComponent,
+    UpdateCandidateComponent
   ],
   bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ]
 })
 export class AppModule {}

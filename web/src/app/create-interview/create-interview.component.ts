@@ -8,6 +8,8 @@ import { IResponse } from "../models/response.interface";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { ModalComponent } from "../reusable-components/modal/modal.component";
 import { HttpErrorResponse } from "@angular/common/http";
+import { MinDateService } from '../utilities/min-date.service';
+import { EnvVarService } from '../utilities/env-var.service';
 
 @Component({
   selector: "app-create-interview",
@@ -19,15 +21,18 @@ export class CreateInterviewComponent implements OnInit {
     private AppServicesService: AppServicesService,
     private service: InterviewService,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private minDateService: MinDateService,
+    private _env: EnvVarService
   ) {}
 
   ngOnInit() {  
     this.getLocation();
     this.getRoundTypes();
     this.getJobDescriptions();
+    this.minimumDate = this.minDateService.setMinimumDate();
    }
-
+  minimumDate: string;
   interview: any = {};
   interviewObj: any = {};
   formType: any;
@@ -91,9 +96,16 @@ export class CreateInterviewComponent implements OnInit {
         modalRef.componentInstance.closeModal.subscribe((rerender: boolean) => {
           modalRef.close();
           if (res.status == 200) {
-            this.router.navigate([
-              `/admin/interview/select-panel/${res.body.payload.data}`,
-            ]);
+            let role = this.AppServicesService.tokenDecoder().role;
+            if (role === this._env.ADMIN) {
+              this.router.navigate([
+                `/admin/interview/select-panel/${res.body.payload.data.jobId}/${res.body.payload.data.interviewId}`,
+              ]);
+            } else if (role === this._env.SUPERUSER) {
+              this.router.navigate([
+                `/superuser/interview/select-panel/${res.body.payload.data.jobId}/${res.body.payload.data.interviewId}`,
+              ]);
+            }
           }
         });
       }

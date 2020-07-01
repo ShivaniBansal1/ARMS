@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -58,7 +57,7 @@ namespace Arms.Api.Startup
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireRoles",
-                     policy => policy.RequireRole("Admin","SuperAdministrator","Employee"));
+                     policy => policy.RequireRole("Admin", "SuperAdministrator", "Employee"));
             });
 
 
@@ -83,6 +82,7 @@ namespace Arms.Api.Startup
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             app.UseHttpsRedirection();
+
             app.UseMvc();
 
 
@@ -91,5 +91,6 @@ namespace Arms.Api.Startup
         {
             app.UseAuthentication();
         }
+            
     }
 }

@@ -10,11 +10,11 @@ import {
 } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ICreate } from "../models/create.interface";
-import { HOST } from 'src/app/config/apiHost.config';
-const CALENDER_API ="https://graph.microsoft.com/v1.0/me/events"
-const CALENDER_VIEW_API= "https://outlook.office.com/api/v2.0/me/calendarview"
+import { HOST } from "src/app/config/apiHost.config";
+const CALENDER_API = "https://graph.microsoft.com/v1.0/me/events";
+const CALENDER_VIEW_API = "https://outlook.office.com/api/v2.0/me/calendarview";
 const USER_DOMAIN = "http://localhost:3000";
-const OUTLOOK_API="https://graph.microsoft.com/v1.0/me/calendar/getSchedule" 
+const OUTLOOK_API = "https://graph.microsoft.com/v1.0/me/calendar/getSchedule";
 @Injectable({
   providedIn: "root",
 })
@@ -28,11 +28,10 @@ export class AppServicesService {
   };
   out_headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json",
-   });
+  });
   out_httpOptions = {
     headers: this.out_headers,
   };
-  
 
   constructor(private http: HttpClient) {}
 
@@ -46,13 +45,19 @@ export class AppServicesService {
     return helper.decodeToken(this.getToken());
   }
 
+  getJdData(id): Observable<any> {
+    return this.http.get<any>(
+      `${HOST}/api/jobDescription/${id}`,
+      this.httpOptions
+    );
+  }
+
   getRoundsFromInterviewId(id: number): Observable<HttpResponse<any>> {
     return this.http.get<any>(`${HOST}/api/panel/round/${id}`, {
       ...this.httpOptions,
     });
   }
 
-  // For making HTTP calls
   searchEmployee(keyword: string): Observable<HttpResponse<any>> {
     return this.http.get<any>(`${HOST}/api/employee/${keyword}`, {
       ...this.httpOptions,
@@ -65,11 +70,13 @@ export class AppServicesService {
       ...this.httpOptions,
     });
   }
+
   getAllRoundTypes(): Observable<IResponse> {
     return this.http.get<any>(`${HOST}/api/RoundType`, {
       ...this.httpOptions,
     });
   }
+
   getAllJobs(): Observable<IResponse> {
     return this.http.get<IResponse>(
       `${HOST}/api/jobDescription`,
@@ -89,22 +96,23 @@ export class AppServicesService {
       ...this.httpOptions,
     });
   }
+
   getAllInterviews(): Observable<IResponse> {
-    let data=this.tokenDecoder();
-     if(data!=null){
-       var role=data.role;
-      }
-     if(role=='Employee'){
+    let data = this.tokenDecoder();
+    if (data != null) {
+      var role = data.role;
+    }
+    if (role == "Employee") {
       return this.http.get<IResponse>(
         `${HOST}/api/interview?employeeId=${data.Id}`,
         this.httpOptions
       );
-    }else{
+    } else {
       return this.http.get<IResponse>(
         `${HOST}/api/interview`,
-          this.httpOptions
-        );
-      }
+        this.httpOptions
+      );
+    }
   }
 
   deleteInterview(interviewId): Observable<IResponse> {
@@ -127,8 +135,7 @@ export class AppServicesService {
     });
   }
 
-  
-  getSkills():Observable<IResponse>{
+  getSkills(): Observable<IResponse> {
     return this.http.get<IResponse>(`${HOST}/api/skill`, this.httpOptions);
   }
 
@@ -142,7 +149,6 @@ export class AppServicesService {
   deleteEmploymentType(id): Observable<IResponse> {
     return this.http.delete<IResponse>(`${HOST}/api/employmentType/${id}`, {
       ...this.httpOptions,
-    
     });
   }
 
@@ -165,21 +171,22 @@ export class AppServicesService {
       { ...this.httpOptions }
     );
   }
+
   deleteIdProofType(id): Observable<IResponse> {
     return this.http.delete<IResponse>(`${HOST}/api/IdProofType/${id}`, {
-      ...this.httpOptions
-      });
-  }
-  deleteRoundType(id): Observable<IResponse> {
-    return this.http.delete<IResponse>(`${HOST}/api/RoundType/${id}`, {
-      ...this.httpOptions
-     
+      ...this.httpOptions,
     });
   }
+
+  deleteRoundType(id): Observable<IResponse> {
+    return this.http.delete<IResponse>(`${HOST}/api/RoundType/${id}`, {
+      ...this.httpOptions,
+    });
+  }
+
   createAssessment(user: IAssessment): Observable<IResponse> {
     return this.http.post<IResponse>(`${USER_DOMAIN}/api/assessment`, user, {
-      ...this.httpOptions
-     
+      ...this.httpOptions,
     });
   }
 
@@ -190,72 +197,114 @@ export class AppServicesService {
       { ...this.httpOptions }
     );
   }
-  blockCalender(index,panel,roundStartDateTime,roundEndDateTime,emailList,userNames):Observable<any>{
-   
-    let obj={
-      "Subject": index+" Interview with Himanshu sharma",
-      "Body": {
-        "ContentType": "HTML",
-        "Content": "I think it will meet our requirements!"
+
+  createLocation(formObject): Observable<any> {
+    return this.http.post<any>(`${HOST}/api/Location`, formObject, {
+      ...this.httpOptions,
+    });
+  }
+
+  createIdProof(formObject): Observable<any> {
+    return this.http.post<any>(`${HOST}/api/IdProofType`, formObject, {
+      ...this.httpOptions,
+    });
+  }
+
+  createEmploymentType(formObject): Observable<any> {
+    return this.http.post<any>(`${HOST}/api/employmentType`, formObject, {
+      ...this.httpOptions,
+    });
+  }
+
+  createEligibilityCriteria(formObject): Observable<any> {
+    return this.http.post<any>(`${HOST}/api/eligibilityCriteria`, formObject, {
+      ...this.httpOptions,
+    });
+  }
+  blockCalender(
+    index,
+    panel,
+    roundStartDateTime,
+    roundEndDateTime,
+    emailList,
+    userNames
+  ): Observable<any> {
+    let obj = {
+      Subject: `Interview of Round ${index}`,
+      Body: {
+        ContentType: "HTML",
+        Content: `Interview with Candidates for Round ${index}. You Belongs to Panel ${panel}. Kindly check with your fellow interviewer.`,
       },
-      "Start": {
-          "DateTime":roundStartDateTime,
-          "TimeZone": "India Standard Time"
+      Start: {
+        DateTime: roundStartDateTime,
+        TimeZone: "India Standard Time",
       },
-      "End": {      
-          "DateTime":roundEndDateTime,
-          "TimeZone": "India Standard Time"
+      End: {
+        DateTime: roundEndDateTime,
+        TimeZone: "India Standard Time",
       },
-      "reminderMinutesBeforeStart": 99,
-      "isOnlineMeeting": true,
-      "onlineMeetingProvider": "teamsForBusiness",
-      "isReminderOn": true,
-      "Attendees": [
+      reminderMinutesBeforeStart: 99,
+      isOnlineMeeting: true,
+      onlineMeetingProvider: "teamsForBusiness",
+      isReminderOn: true,
+      Attendees: [
         {
-          "EmailAddress": {
-            "Address":emailList[0],
-            "Name":userNames[0]
+          EmailAddress: {
+            Address: emailList[0],
+            Name: userNames[0],
           },
-          "Type": "Required"
+          Type: "Required",
         },
         {
-          "EmailAddress": {
-            "Address":emailList[1],
-            "Name":userNames[1]
+          EmailAddress: {
+            Address: emailList[1],
+            Name: userNames[1],
           },
-          "Type": "Required"
-        }
-      ]
-    }
-     return this.http.post<any>(CALENDER_API,obj);
-    
-    
-   }
-   getRound(jobId,employeeId){
+          Type: "Required",
+        },
+      ],
+    };
+    return this.http.post<any>(CALENDER_API, obj);
+  }
+  getRound(jobId: number = 0, employeeId: number = 0) {
     return this.http.get<IResponse>(
       `${HOST}/api/interview?jobId=${jobId}&employeeId=${employeeId}`,
-        { ...this.httpOptions }
+      { ...this.httpOptions }
     );
+  }
 
-   }
-   checkAvailability(roundStartDateTime,roundEndDateTime,emailList){
-    {
-      
-   let obj=    {        
-        "schedules":emailList,
-        "startTime": {
-            "dateTime": roundStartDateTime,
-            "timeZone": "India Standard Time"
-        },
-        "endTime": {
-            "dateTime": roundEndDateTime,
-            "timeZone": "India Standard Time"
-        },
-        "availabilityViewInterval": 60
-    }
-  
-    
-    return this.http.post<any>(OUTLOOK_API,obj);
-   }
-  } 
+  checkAvailability(roundStartDateTime, roundEndDateTime, emailList) {
+    let obj = {
+      schedules: emailList,
+      startTime: {
+        dateTime: roundStartDateTime,
+        timeZone: "India Standard Time",
+      },
+      endTime: {
+        dateTime: roundEndDateTime,
+        timeZone: "India Standard Time",
+      },
+      availabilityViewInterval: 60,
+    };
+
+    return this.http.post<any>(OUTLOOK_API, obj);
+  }
+
+  updateRoundTime(obj: any) {
+    return this.http.put(`${HOST}/api/panel/round`, obj, {
+      ...this.httpOptions,
+    });
+  }
+
+  createPanel(obj: any, jobId: number) {
+    return this.http.post(`${HOST}/api/panel/${jobId}`, obj, {
+      ...this.httpOptions,
+    });
+  }
+
+  getAllCriteriaTypes(): Observable<IResponse> {
+    return this.http.get<any>(`${HOST}/api/CriteriaType`, {
+      ...this.httpOptions,
+    });
+  }
 }

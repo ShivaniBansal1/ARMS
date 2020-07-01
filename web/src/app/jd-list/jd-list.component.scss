@@ -1,7 +1,6 @@
 .main-panel {
   width: inherit !important;
 }
-
 h4 {
   font-family: "ubuntu-medium", sans-serif !important;
   margin-top: 0 !important;
@@ -44,7 +43,6 @@ i:hover {
 
 .paginationDiv ::ng-deep {
   .page-item.active .page-link {
-    // z-index: 1;
     color: #fff;
     background-color: #fc4c02;
     border-color: #fc4c02;

@@ -48,7 +48,6 @@ namespace Arms.Api.Controllers
              mail = new MailMessage()
             {
                 From = new MailAddress("your email here"),
-                From = new MailAddress("your email here"),
                 Subject = "Jd info",
                 IsBodyHtml = true
             };
