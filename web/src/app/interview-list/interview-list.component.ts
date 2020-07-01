@@ -31,9 +31,17 @@ export class InterviewListComponent implements OnInit {
     this.loadInterviews();
   }
 
+  datecheck(date) {
+    const currentDate = new Date().toISOString();
+    if (date <= currentDate) {
+      return 1;
+    } else { return 0; }
+  }
+
   loadInterviews() {
     return this._service.getAllInterviews().subscribe((response: IResponse) => {
       this.interviewsList = response.payload.data
+      console.log(this.interviewsList[0],"THE LIST")
     });
   }
   appliedCandidates(jobId:number){

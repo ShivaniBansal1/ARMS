@@ -20,52 +20,43 @@
       (ngSubmit)="createInterview(form.value)"
     >
       <div class="form-group top">
-        <label for="jobId">Jd Id <span class="asterick">*</span></label>
-        <div class="input-group col-xs-12">
-          <span class="input-group-append btn btn-gradient-danger span">
-            CYGJID
-          </span>
-          <input
-            type="text"
+        <div >
+          <label for="jobId"
+            >Job Title<span class="asterick">*</span></label
+          >
+          <select
             name="jobId"
+            type="text"
             ngModel
             class="form-control"
-            #jobId="ngModel"
             id="jobId"
-            [ngClass]="{ 'is-invalid': jobId.dirty && jobId.invalid }"
-            placeholder="Job ID"
-            maxlength="4"
+            #jobId="ngModel"
+            [ngClass]="{
+              'is-invalid': jobId.dirty && jobId.invalid
+            }"
             required
-          />
+          >
+            <option
+              class="select-css"
+              *ngFor="let job of Job"
+              [ngValue]="job.id"
+            >
+              {{ job.jobTitle }}
+            </option>
+          </select>
           <div
             *ngIf="jobId.dirty && jobId.errors?.required"
             class="invalid-feedback"
           >
             <div>
-              <i class="mdi mdi-alert-outline"></i>Job Description Id is
-              required
+              <i class="mdi mdi-alert-outline"></i>jobId is required
             </div>
           </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="jd">Job Title<span class="asterick">*</span></label>
-        <input
-          name="jd"
-          type="text"
-          ngModel
-          class="form-control"
-          id="jd"
-          #jd="ngModel"
-          [ngClass]="{ 'is-invalid': jd.dirty && jd.invalid }"
-          placeholder="Job Title"
-          required
-        />
-        <div *ngIf="jd.dirty && jd.errors?.required" class="invalid-feedback">
-          <div><i class="mdi mdi-alert-outline"></i>Job Title is required</div>
-        </div>
-      </div>
+     
+
       <div class="form-group">
         <label for="date">Date<span class="asterick">*</span></label>
         <input
@@ -181,10 +172,11 @@
               <label for="roundNumber"
                 >Round Number<span class="asterick">*</span></label
               >
-              <input
+              <input 
+                [readOnly]
                 name="roundNumber_{{ i }}"
                 type="text"
-                ngModel
+                [ngModel]= "i+1"
                 class="form-control"
                 id="roundNumber"
                 #roundNumber="ngModel"

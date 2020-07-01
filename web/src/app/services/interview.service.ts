@@ -85,6 +85,14 @@ export class InterviewService {
       `${HOST}/api/interview/${id}?roundID=${roundID}`, this.options
     )
   }
+
+  getAllJobs():Observable<any>{
+    return this.http.get<any>(
+      `${HOST}/api/jobDescription`,this.options
+    )
+  }
+
+  
 }
 
 

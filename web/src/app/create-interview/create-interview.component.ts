@@ -1,3 +1,4 @@
+import { jobDescription } from './../models/jobDescription.interface';
 import { InterviewService } from "./../services/interview.service";
 import { Component, OnInit, Input } from "@angular/core";
 import { AppServicesService } from "../services/app-services.service";
@@ -21,10 +22,10 @@ export class CreateInterviewComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
-  ngOnInit() {
-   
+  ngOnInit() {  
     this.getLocation();
     this.getRoundTypes();
+    this.getJobDescriptions();
    }
 
   interview: any = {};
@@ -35,6 +36,8 @@ export class CreateInterviewComponent implements OnInit {
 
   Location: any[] = [];
 
+  Job: any[] = [];
+
   number: number;
   location: string;
 
@@ -43,17 +46,24 @@ export class CreateInterviewComponent implements OnInit {
   }
 
   getLocation() {
-    this.service.getLocation().subscribe((res: any) => {
+    this.service.getLocation().subscribe((res: IResponse) => {
       this.Location = res.payload.data;
     });
   }
 
   getRoundTypes() {
-    this.service.getRoundTypes().subscribe((res: any) => {
+    this.service.getRoundTypes().subscribe((res: IResponse) => {
       this.RoundType = res.payload.data;
     });
   }
-  i:any;
+
+ getJobDescriptions(){
+   this.service.getAllJobs().subscribe((res: IResponse) => {
+     this.Job = res.payload.data;
+     console.log(this.Job)
+   })
+ }
+
   createInterview(interview: any) {
     let round = [];
     for (let index = 0; index < this.number; index++) {
