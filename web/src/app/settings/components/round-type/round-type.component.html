@@ -36,7 +36,7 @@
       <div class="card" *ngFor="let roundType of roundTypeList">
         <div class="card-body">
           <span class="mr">{{ roundType.roundType.id }}</span>
-          <span class="mr">{{roundType.roundType.name}}<span>{{roundType.criteriaName}}</span</span>
+          <span class="mr">{{roundType.roundType.name}}<span> - </span> {{roundType.criteriaName}} </span>
           <span
             ><i class="fas fa-trash" (click)="removeRoundType(roundType.id)"></i
           ></span>
