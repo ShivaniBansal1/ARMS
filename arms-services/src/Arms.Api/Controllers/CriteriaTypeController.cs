@@ -35,7 +35,7 @@ namespace Arms.Api.Controllers
         {
             try
             {
-                List<CriteriaType> criteriaTypes = _context.CriteriaType.ToList();
+                List<CriteriaType> criteriaTypes = _context.CriteriaType.Include(l => l.roundType).ToList();
                 var response = new
                 {
                     success = true,

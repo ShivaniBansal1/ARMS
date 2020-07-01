@@ -170,7 +170,7 @@
                     </div>
                 </div>   
 
-                <div class="d-flex flex-row-reverse" >
+                <div *ngIf="formType=='update'" class="d-flex flex-row-reverse" >
                     <button type="submit" [disabled]="f.pristine || f.invalid || (idProofTypeId.dirty && model.nationality=='Indian' && model.idProofTypeId != aadharId)" class="btn btn-gradient-danger mr-2" 
                     ><b>Update</b></button>
                     <button class="btn btn-light" (click)="closeUpdateModal()"><b>Cancel</b></button>

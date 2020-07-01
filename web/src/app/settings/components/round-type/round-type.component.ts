@@ -19,6 +19,7 @@ export class RoundTypeComponent implements OnInit {
   roundTypeForm: FormGroup;
   addRound: boolean = false;
   roundTypeList: any = [];
+  criteriaTypeList: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -49,9 +50,9 @@ export class RoundTypeComponent implements OnInit {
   }
 
   loadRoundTypes() {
-    return this._service.getAllRoundTypes().subscribe((response: any) => {
-      this.roundTypeList = response.payload.data;
-    });
+    return this._service.getAllCriteriaTypes().subscribe((response: any) => {
+          this.roundTypeList = response.payload.data;
+        });
   }
 
   deleteNewEntry(typeIndex){
@@ -105,5 +106,20 @@ export class RoundTypeComponent implements OnInit {
     this.roundCriteria(typeIndex).removeAt(criteriaIndex);
   }
 
-  onSubmit() {  }
+  onSubmit() {
+    console.log(this.roundTypeForm.get('roundTypes').get('criteria').value)
+    // this._service.createLocation(this.roundTypeForm.get('roundTypes').value).subscribe((res:any) => {
+    //   const modalRef = this.modalService.open(ModalComponent);
+    //   modalRef.componentInstance.shouldConfirm = false;
+    //   modalRef.componentInstance.success = res.success;
+    //   modalRef.componentInstance.message = res.payload.message;
+    //   modalRef.componentInstance.closeModal.subscribe((rerender: boolean) => {
+    //     modalRef.close();
+        
+    //     this.roundTypeForm.reset();
+    //     this.addRound = false;
+    //     this.loadRoundTypes();
+    //   });
+    // })
+    }
 }

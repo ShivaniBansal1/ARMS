@@ -23,7 +23,7 @@ namespace Arms.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin,SuperAdministrator")]
     public class JobDescriptionController : BaseController
     {
 
@@ -363,7 +363,7 @@ namespace Arms.Api.Controllers
                     success = false,
                     payload = new
                     {
-                        message = "Cnnot delete this Job"
+                        message = "This job cannot be deleted"
                     }
 
                 };
