@@ -149,7 +149,7 @@
                 <div *ngIf="pan.touched && pan.errors?.required" class="invalid-feedback">
                   <div><i class="mdi mdi-alert-outline"></i>Identification No is required</div>
                 </div>
-                <div *ngIf="pan.dirty && pan.errors?.pattern" class="invalid-feedback">
+                <div *ngIf="model.idProofTypeId == panId && pan.dirty && pan.errors?.pattern" class="invalid-feedback">
                   <div><i class="mdi mdi-alert-outline"></i>Enter valid Pan Card Number</div>
                 </div>
               </div>
