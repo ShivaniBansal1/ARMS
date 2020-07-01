@@ -9,6 +9,7 @@ import { ModalComponent } from "./../reusable-components/modal/modal.component";
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { JobService } from '../services/job.service'
+import { EnvVarService } from '../utilities/env-var.service';
 @Component({
   selector: "app-jd-form",
   templateUrl: "./jd-form.component.html",
@@ -21,13 +22,13 @@ export class JdFormComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private jobService: JobService,
-    private minDateService:MinDateService
+    private minDateService:MinDateService,
+    private _env: EnvVarService
   ) { }
 
   @Output()
   closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //@ViewChild("jobId", { static: false }) jobId: ElementRef;
   @ViewChild("jobTitle", { static: false }) jobTitle: ElementRef;
   @ViewChild("openingDate", { static: false }) openingDate: ElementRef;
   @ViewChild("closingDate", { static: false }) closingDate: ElementRef;
@@ -120,7 +121,6 @@ export class JdFormComponent implements OnInit {
 
   jdFormData() {
     this.jdFormObject = {
-      // jdId: `CYGJID${this.jobId.nativeElement.value}`,
       jobTitle: this.jobTitle.nativeElement.value,
       openingDate: this.openingDate.nativeElement.value,
       closingDate: this.closingDate.nativeElement.value,
@@ -153,7 +153,18 @@ export class JdFormComponent implements OnInit {
         modalRef.close();
       });
       this.modalClose(true);
-      this.router.navigate(["admin/job-desc"]);
+      if (res.status == 200) {
+        let role = this._service.tokenDecoder().role;
+        if (role === this._env.ADMIN) {
+          this.router.navigate([
+            `/admin/job-desc`,
+          ]);
+        } else if (role === this._env.SUPERUSER) {
+          this.router.navigate([
+            `/superuser/job-desc`,
+          ]);
+        }
+      }    
     },
       (error: HttpErrorResponse) => {
         

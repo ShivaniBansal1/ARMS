@@ -5,7 +5,7 @@
         <form name="form" #f="ngForm" (ngSubmit)="createApplication(f)" >
   
           <div class="form-group">
-            <label for="appliedForJdId">Applied for JD<span class="asterick">*</span></label>
+            <label for="appliedForJdId">Applied for Job ID<span class="asterick">*</span></label>
             <input [readOnly]="type == 'progressTracker' || 'candidate'" type="text" name="appliedForJdId" class="form-control" [(ngModel)]="model.appliedForJdId" 
              placeholder="JD referral" #appliedForJdId="ngModel" id="appliedForJdId"
              [ngClass]="{ 'is-invalid': f.submitted && appliedForJdId.invalid }">
@@ -72,7 +72,7 @@
             <label >Experience</label>            
             <div class="row">
               <div class="col-md-3">
-                <select type="text" name="experienceInYears" placeholder="In years" 
+                <select type="text" name="experienceInYears"
                 class="form-control" id="experienceInYears" [(ngModel)]="model.experienceInYears" #experienceInYears="ngModel" 
                 [ngClass]="{ 'is-invalid': experienceInYears.dirty && experienceInYears.invalid}" required>
                   <option class="select-css" value="0" selected disabled  >YYYY</option>
@@ -86,7 +86,7 @@
               </div>
 
               <div class="col-md-3">
-                <select type="text" name="experienceInMonths"                         placeholder="In months" 
+                <select type="text" name="experienceInMonths"
                 class="form-control" id="experienceInMonths" [(ngModel)]="model.experienceInMonths" #experienceInMonths="ngModel" 
                 [ngClass]="{ 'is-invalid': experienceInMonths.dirty && experienceInMonths.invalid}" required>
                   <option class="select-css" value="0" selected disabled >MM</option>
