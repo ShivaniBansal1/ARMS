@@ -25,9 +25,9 @@
             <div *ngIf="title == 'candidate'" ngbDropdown>
               <!-- <button class="btn btn-gradient-danger" id="addOption" ngbDropdownToggle>Mark As
               </button> -->
-
-              <button class="btn btn-fw btn-danger mr-2" (click)="shorlisting(true)">Shortlisted</button>
-              <button class="btn btn-fw btn-danger mr-2" (click)="shorlisting(false)">Not Shortlisted</button>
+            
+              <button *ngIf="role=='Admin' && title=='candidate'" class="btn btn-fw btn-danger mr-2" (click)="shorlisting(true)">Shortlisted</button>
+              <button *ngIf="role=='Admin' && title=='candidate'" class="btn btn-fw btn-danger mr-2" (click)="shorlisting(false)">Not Shortlisted</button>
 
             </div>
           </div>
@@ -46,7 +46,7 @@
         <table class="table">
           <thead>
             <tr>
-              <td class="form-check form-check-flat">
+              <td *ngIf="role=='Admin' && title=='candidate'" class="form-check form-check-flat">
                 <label class="form-check-label">
                   <input #checkAll type="checkbox" (change)="check($event, checkAll.checked)">
                   <i class="input-helper"></i>
@@ -61,7 +61,7 @@
             <tr *ngFor="let entry of data ; let i = index"
               [ngClass]="{'notShortlistedback': entry.applicationStatusType.statusName=='NotShortlisted', 'shortlistedBack': entry.applicationStatusType.statusName=='Shortlisted'}">
 
-              <td class="form-check form-check-flat">
+              <td *ngIf="role=='Admin' && title=='candidate'" class="form-check form-check-flat">
                 <label class="form-check-label">
                   <input #checkOne class="checkbox" type="checkbox" (click)="checkSpecific($event, entry.id)"
                     [(ngModel)]="entry.checked">
