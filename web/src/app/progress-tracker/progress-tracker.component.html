@@ -16,20 +16,32 @@
                   </a>
                 </li>
                 
-                <li class="progress-step anim--path " routerLink="applied" [ngClass]="{'is-complete': applicationStatusName === 'AppliedSuccessfully'}">
+                <li class="progress-step anim--path " routerLink="applied" [ngClass]="{'is-complete': true}">
                   <a>
                     
                     <div class="progress-marker" data-text=""></div>
                     <div class="progress-text">
                       Applied Successfully
-                      <div *ngIf="applicationStatusName === 'AppliedSuccessfully'">
+                      <div >
                         <i  class="mdi mdi-checkbox-marked-circle-outline"></i>
                       </div>
                     </div>
                   </a>
                 </li>
   
-                <li class="progress-step anim--path"  [ngClass]="{'is-active': applicationStatusName === 'AppliedSuccessfully', 'is-complete': applicationStatusName === 'InterviewScheduled'}">
+                <li class="progress-step anim--path"  [ngClass]="{'is-active': applicationStatusName === 'AppliedSuccessfully', 'is-complete': applicationStatusName === 'Shortlisted' || applicationStatusName ==='NotShortlisted' }">
+                  <a>
+                    <div class="progress-marker" data-text=""></div>
+                    <div class="progress-text">
+                      Shortlisting
+                      <div *ngIf="applicationStatusName === 'Shortlisted' || applicationStatusName ==='NotShortlisted'">
+                        <i  class="mdi mdi-checkbox-marked-circle-outline"></i>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+
+                <li class="progress-step anim--path"  [ngClass]="{'is-active': applicationStatusName === 'Shortlisted', 'is-complete': applicationStatusName === 'InterviewScheduled'}">
                   <a>
                     <div class="progress-marker" data-text=""></div>
                     <div class="progress-text">
