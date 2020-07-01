@@ -2,6 +2,7 @@ import { InterviewListComponent } from './interview-list/interview-list.componen
 import { UpdateCandidateComponent } from './update-candidate/update-candidate.component';
 import { UpdateInterviewComponent } from './update-interview/update-interview.component';
 import { HrInterviewAssessementComponent } from './hr-interview-assessement/hr-interview-assessement.component';
+import { EmailListModalComponent } from './email-list-modal/email-list-modal.component';
 import { InterviewTrackerComponent } from "./interview-tracker/interview-tracker.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { CreateInterviewComponent } from "./create-interview/create-interview.component";
