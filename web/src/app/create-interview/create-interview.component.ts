@@ -1,4 +1,6 @@
 import { jobDescription } from './../models/jobDescription.interface';
+import { EnvVarService } from './../utilities/env-var.service';
+import { MinDateService } from "./../utilities/min-date.service";
 import { InterviewService } from "./../services/interview.service";
 import { Component, OnInit, Input } from "@angular/core";
 import { AppServicesService } from "../services/app-services.service";
@@ -8,8 +10,6 @@ import { IResponse } from "../models/response.interface";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { ModalComponent } from "../reusable-components/modal/modal.component";
 import { HttpErrorResponse } from "@angular/common/http";
-import { MinDateService } from '../utilities/min-date.service';
-import { EnvVarService } from '../utilities/env-var.service';
 
 @Component({
   selector: "app-create-interview",
@@ -88,7 +88,6 @@ export class CreateInterviewComponent implements OnInit {
 
     this.service.createInterview(this.interviewObj).subscribe(
       (res: any) => {
-        console.log(res.body.payload.data.interviewId);
         const modalRef = this.modalService.open(ModalComponent);
         modalRef.componentInstance.shouldConfirm = false;
         modalRef.componentInstance.success = res.body.success;

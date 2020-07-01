@@ -66,6 +66,7 @@
           class="form-control"
           id="date"
           #date="ngModel"
+          [min]=minimumDate
           [ngClass]="{ 'is-invalid': date.dirty && date.invalid }"
           placeholder="Date"
           required
@@ -176,7 +177,11 @@
                 [readOnly]
                 name="roundNumber_{{ i }}"
                 type="text"
+<<<<<<< HEAD
                 [ngModel]= "i+1"
+=======
+                [ngModel]="i + 1"
+>>>>>>> 02ab4efe083e83370b0b16f5b4fd6cba0116b354
                 class="form-control"
                 id="roundNumber"
                 #roundNumber="ngModel"
@@ -191,7 +196,7 @@
                 class="invalid-feedback"
               >
                 <div>
-                  <i class="mdi mdi-alert-outline"></i>roundNumber is required
+                  <i class="mdi mdi-alert-outline"></i>RoundNumber is required
                 </div>
               </div>
             </div>
@@ -227,7 +232,7 @@
                 class="invalid-feedback"
               >
                 <div>
-                  <i class="mdi mdi-alert-outline"></i>roundType is required
+                  <i class="mdi mdi-alert-outline"></i>RoundType is required
                 </div>
               </div>
             </div>
@@ -240,6 +245,7 @@
                 ngModel
                 class="form-control"
                 id="roundDate"
+                [min]=minimumDate
                 #roundDate="ngModel"
                 [ngClass]="{
                   'is-invalid': roundDate.dirty && roundDate.invalid
@@ -252,7 +258,7 @@
                 class="invalid-feedback"
               >
                 <div>
-                  <i class="mdi mdi-alert-outline"></i>roundDate is required
+                  <i class="mdi mdi-alert-outline"></i>RoundDate is required
                 </div>
               </div>
             </div>
@@ -277,7 +283,7 @@
                 class="invalid-feedback"
               >
                 <div>
-                  <i class="mdi mdi-alert-outline"></i>roundTime is required
+                  <i class="mdi mdi-alert-outline"></i>RoundTime is required
                 </div>
               </div>
             </div>

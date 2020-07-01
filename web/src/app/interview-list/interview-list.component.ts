@@ -14,7 +14,6 @@ import {
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { ModalComponent } from "src/app/reusable-components/modal/modal.component";
 import { HttpErrorResponse } from "@angular/common/http";
-
 import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: "app-interview-list",
@@ -48,7 +47,7 @@ export class InterviewListComponent implements OnInit {
   loadInterviews() {
     this.spinnerService.show();
     return this._service.getAllInterviews().subscribe((response: IResponse) => {
-     this.spinnerService.hide();
+      this.spinnerService.hide();
       this.interviewsList = response.payload.data;
     });
   }

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Arms.Domain.CustomEntities;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
+using Arms.Api.Middlewares;
 
 namespace Arms.Api.Controllers
 {
@@ -22,6 +23,7 @@ namespace Arms.Api.Controllers
 		public MailHelperController mailHelper = new MailHelperController();
 		//Email class Object
 		public Email email = new Email();
+
 		
 		ArmsDbContext _context;
 		public InterviewController( ArmsDbContext armsContext)
@@ -30,96 +32,98 @@ namespace Arms.Api.Controllers
 		}
 
 
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult GetInterviews(int employeeId=0,int jobId=0)
-		{    if(employeeId!=0 && jobId != 0)
-			{
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult GetInterviews(int employeeId = 0, int jobId = 0)
+        {
+            if (employeeId != 0 && jobId != 0)
+            {
 
 
-				Round round =GetRound(employeeId, jobId);
-				var response = new
-				{
-					success = true,
-					payload = new
-					{
-						data = round,
-						message = "Round Retrieved Successfully"
-					}
+                Round round = GetRound(employeeId, jobId);
+                var response = new
+                {
+                    success = true,
+                    payload = new
+                    {
+                        data = round,
+                        message = "Round Retrieved Successfully"
+                    }
 
-				};
-				return StatusCode(200, response);
+                };
+                return StatusCode(200, response);
 
 
-			}
-			if (employeeId != 0)
-			{
-				List<Interview> interviewsListing = filterInterviews(employeeId);
+            }
+            if (employeeId != 0)
+            {
+                List<Interview> interviewsListing = filterInterviews(employeeId);
 
-				var response = new
-				{
-					success = true,
-					payload = new
-					{
-						data = interviewsListing,
-						message = "Interview Records Retrieved Successfully"
-					}
+                var response = new
+                {
+                    success = true,
+                    payload = new
+                    {
+                        data = interviewsListing,
+                        message = "Interview Records Retrieved Successfully"
+                    }
 
-				};
-				return StatusCode(200, response);
+                };
+                return StatusCode(200, response);
 
-			}
+            }
 
-			List<Interview> interviews = _context.Interview.Include(c => c.JobDescription).ToList();
-				try
-				{
-					if (interviews != null)
-					{
-						var response = new
-						{
-							success = true,
-							payload = new
-							{
-								data = interviews,
-								message = "Interview Records Retrieved Successfully"
-							}
+            List<Interview> interviews = _context.Interview.Include(c => c.JobDescription).ToList();
+            try
+            {
+                if (interviews != null)
+                {
+                    var response = new
+                    {
+                        success = true,
+                        payload = new
+                        {
+                            data = interviews,
+                            message = "Interview Records Retrieved Successfully"
+                        }
 
-						};
-						return StatusCode(200, response);
-					}
-					else
-					{
-						var response = new
-						{
-							success = false,
-							payload = new
-							{
-								message = "The Interview Records you are looking for do not exist"
-							}
+                    };
+                    return StatusCode(200, response);
+                }
+                else
+                {
+                    var response = new
+                    {
+                        success = false,
+                        payload = new
+                        {
+                            message = "The Interview Records you are looking for do not exist"
+                        }
 
-						};
-						return StatusCode(404, response);
-					}
-				}
+                    };
+                    return StatusCode(404, response);
+                }
+            }
 
-				catch (Exception e)
-				{
-					var response = new
-					{
-						success = false,
-						payload = new
-						{
-							message = e.InnerException.Message
-						}
+            catch (Exception e)
+            {
+                var response = new
+                {
+                    success = false,
+                    payload = new
+                    {
+                        message = e.InnerException.Message
+                    }
 
-					};
-					return StatusCode(500, response);
-				}
-			
-		}
+                };
+                return StatusCode(500, response);
+            }
+
+        }
 
 
 		[HttpGet("{id}")]
+        [AllowAnonymous]
 		public IActionResult GetInterview(int id, int append=0)
 		{
 			var interview = _context.Interview.Include(c => c.JobDescription).SingleOrDefault(c => c.Id == id);
@@ -149,8 +153,8 @@ namespace Arms.Api.Controllers
 													 .Include(c => c.Interview)
 													 .Include(c => c.RoundType)
 													 .Where(c => c.InterviewId == id)
-													 .ToList();  
-						var response = new
+													 .ToList();
+                       var response = new
 						{
 							success = true,
 							payload = new
@@ -199,6 +203,7 @@ namespace Arms.Api.Controllers
 		{
 			try
 			{
+                TokenDecoder decodedToken = new TokenDecoder(Request);
 				var interviewObj = new Interview
 				{
 					Date = customDTO.Date,
@@ -206,31 +211,34 @@ namespace Arms.Api.Controllers
 					Venue = customDTO.Venue,
 					JobId = customDTO.JobId,
 					NoOfRounds = customDTO.NoOfRounds,
-					CreatedBy = customDTO.CreatedBy,
-					ModifiedBy = customDTO.ModifiedBy
+					CreatedBy = decodedToken.id,
+					ModifiedBy = decodedToken.id
 				};
 				_context.Interview.Add(interviewObj);
 				_context.SaveChanges();
-				int id = interviewObj.Id;
-				List<Round> roundsList = new List<Round>();
+				int interviewId = interviewObj.Id;
+                int jobId = interviewObj.JobId;
+                List<Round> roundsList = new List<Round>();
 				foreach (Round round in customDTO.Round)
 				{
 					var roundObj = round;
-					roundObj.InterviewId = id;
-					_context.Round.Add(roundObj);
-					_context.SaveChanges();
-				  
-				   
-				}
-				var roundToAdd = _context.Round.Include(c => c.RoundType).
-					Where(c => c.InterviewId == interviewObj.Id);
-				var response = new
+					roundObj.InterviewId = interviewId;
+                    roundObj.CreatedBy = decodedToken.id;
+
+                    _context.Round.Add(roundObj);
+                    _context.SaveChanges();
+                  
+                   
+                }
+                var roundToAdd = _context.Round.Include(c => c.RoundType).
+                    Where(c => c.InterviewId == interviewObj.Id);
+                var response = new
 				{
 					success = true,
 					payload = new
 					{
 
-						data=id,
+                        data = new { interviewId = interviewId, jobId = jobId},
 						message = "Interview Record Created Successfully"
 
 					}
@@ -241,10 +249,7 @@ namespace Arms.Api.Controllers
 				var applications = _context.Application.Include(c => c.Candidate).
 										   Where(c => c.JobId == interviewObj.JobId);
 				//getting the job description object for sending in email
-				JobDescription jdObject = _context.JobDescription.Include(l => l.employmentType).
-															   Include(l => l.eligibilityCriteria).
-															   Include(l => l.loc).
-															  FirstOrDefault(c => c.Id == interviewObj.JobId);
+				JobDescription jdObject = _context.JobDescription.FirstOrDefault(c => c.Id == interviewObj.JobId);
 
 				//Adding Emails in string Array to send to candidates
 
@@ -283,6 +288,7 @@ namespace Arms.Api.Controllers
 			var interview = _context.Interview.SingleOrDefault(c => c.Id == id);
 			try
 			{
+                TokenDecoder decodedToken = new TokenDecoder(Request);
 				if (interview != null)
 				{
 					if (roundID == 0)
@@ -307,6 +313,7 @@ namespace Arms.Api.Controllers
 						{
 							interview.NoOfRounds = customDTO.NoOfRounds;
 						}
+                        interview.ModifiedBy = decodedToken.id;
 						_context.Interview.Update(interview);
 						_context.SaveChanges();
 						var response = new
@@ -338,6 +345,7 @@ namespace Arms.Api.Controllers
 						{
 							round.RoundTime = customDTO.Round[0].RoundTime;
 						}
+                        round.ModifiedBy = decodedToken.id;
 						_context.Round.Update(round);
 						_context.SaveChanges();
 						var response = new
@@ -390,14 +398,43 @@ namespace Arms.Api.Controllers
 				{
 					if (roundID == 0)
 					{
-						var rounds = _context.Round.Where(c=>c.InterviewId==id);
-						foreach (var round in rounds)
-						{
-						   _context.Round.Remove(round);
-						}
+                        var rounds = _context.Round.Where(c=>c.InterviewId==id);
+                        foreach (var round in rounds)
+                        {    //finnding interview Panel corresponding to round
+                            List<InterviewPanel> interviewPanels = _context.InterviewPanel.
+                                                                 Where(c => c.RoundId == round.Id).ToList();
+                            //finding interviewer correesponding to panel
+                             
+                           List< Interviewer>interviewers = _context.Interviewer.
+                                                             Where(c => c.JobId == interview.JobId).
+                                                              ToList();
+                            // removing interviewer data
+                           
+                            if (interviewers != null)
+                            {
+                                foreach (var interviewer in interviewers)
+                                {
+                                    _context.Interviewer.Remove(interviewer);
+                                }
+                            }
+                            // removing interview Panel
+                            if (interviewPanels != null)
+                            {
+                                // //removing interview Panel
+                                foreach (var interviewPanel in interviewPanels)
+                                {
+                                    _context.InterviewPanel.Remove(interviewPanel);
+                                }
+                            }
+                            if (round != null)
+                            {
+                                //removing Rounds 
+                                _context.Round.Remove(round);
+                            }
+                        }
 
-					   _context.Interview.Remove(interview);
-					   
+                       _context.Interview.Remove(interview);
+                       
 						_context.SaveChanges();
 						var response = new
 						{
@@ -451,16 +488,16 @@ namespace Arms.Api.Controllers
 				};
 				return StatusCode(500, response);
 			}
-			 
-		}
-	   //function which returns round 
-		public Round GetRound(int employeeId,int jobId)
-		{
-				 var interviewer = _context.Interviewer.FirstOrDefault(c => c.EmployeeId == employeeId && c.JobId == jobId);
-				var panel = _context.InterviewPanel.FirstOrDefault(c => c.Id == interviewer.InterviewPanelId);
-				Round round = _context.Round.Include(c => c.RoundType).FirstOrDefault(c => c.Id == panel.RoundId);
-				return round;
-		   
+             
+        }
+       //function which returns round 
+        public Round GetRound(int employeeId,int jobId)
+        {
+                 var interviewer = _context.Interviewer.FirstOrDefault(c => c.EmployeeId == employeeId && c.JobId == jobId);
+                var panel = _context.InterviewPanel.FirstOrDefault(c => c.Id == interviewer.InterviewPanelId);
+                Round round = _context.Round.Include(c => c.RoundType).Include(c=> c.Interview).ThenInclude(c=> c.JobDescription).FirstOrDefault(c => c.Id == panel.RoundId);
+                return round;
+           
 
 	  }
 		//function which returns list of filtered interviews
@@ -480,16 +517,12 @@ namespace Arms.Api.Controllers
 			return interviewsListing;
 		}
 
-
-		
-	  
-
-	}
-	//Email Class is made seperate to pass 3 different objects
-	public class Email
-	{
-		public Email()
-		{
+    }
+    //Email Class is made seperate to pass 3 different objects
+    public class Email
+    {
+        public Email()
+        {
 
 
 		}
@@ -533,7 +566,7 @@ namespace Arms.Api.Controllers
 		  </tr>
 		  <tr>
 			<td><b>Job Type:</b></td>
-			<td>" + jdObject.employmentType.employmentTypeName + @"</td>
+			<td>" + jdObject + @"</td>
 		  </tr>
 		  <tr>
 		  <td ><b>Address:</b></td>
@@ -550,14 +583,8 @@ namespace Arms.Api.Controllers
 		 </body>
 	 </html>
 			";
-			Console.WriteLine(output);
-			return output;
-		}
-
-
-
-
-
+				return output;
+			}
 
 	}
 }
