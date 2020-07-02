@@ -169,7 +169,7 @@ namespace Arms.Api.Controllers
                 return StatusCode(500, response);
             }
         }
-        public dynamic validateCandidate(CandidateApplicationResume candidateObj, int candidateId = 0)
+        public dynamic validateCandidate(CandidateApplicationResume candidateObj, int candidateId = 0, string request = "post")
         {
             var candidateEmailValidate = _context.Candidate.FirstOrDefault(c => (c.Email == candidateObj.Email && c.Id != candidateId));
 
@@ -178,6 +178,7 @@ namespace Arms.Api.Controllers
                 var res = new
                 {
                     isValid = false,
+                    success = false,
                     message = "This Email is already registered."
                 };
                 return res;
@@ -189,13 +190,14 @@ namespace Arms.Api.Controllers
                 var res = new
                 {
                     isValid = false,
+                    success = false,
                     message = "This Phone Number is already registered."
                 };
                 return res;
             }
-            var candidate = _context.Candidate.FirstOrDefault(c => c.IdentificationNo == candidateObj.IdentificationNo);
-            var application = _context.Application.FirstOrDefault(c => c.CandidateId == candidateId);
-            if (candidate == null || application == null)
+            var candidate = _context.Candidate.FirstOrDefault(c => c.IdentificationNo == candidateObj.IdentificationNo );
+            var application = _context.Application.FirstOrDefault(c => c.CandidateId == candidateId );
+            if ( request=="put" || candidate == null || application == null)
             {
                 var res = new
                 {
@@ -228,6 +230,7 @@ namespace Arms.Api.Controllers
                 var res = new
                 {
                     isValid = false,
+                    success = true,
                     message = "You cannot register before 6 months"
                 };
                 return res;
@@ -238,6 +241,7 @@ namespace Arms.Api.Controllers
                 var res = new
                 {
                     isValid = false,
+                    success = true,
                     message = "You've already registered for this Job Position"
                 };
                 return res;
@@ -269,7 +273,7 @@ namespace Arms.Api.Controllers
                 {
                     var responseFalse = new
                     {
-                        success = false,
+                        success = result.success,
                         payload = new
                         {
                             message = result.message
@@ -385,20 +389,21 @@ namespace Arms.Api.Controllers
                     var candidate = _context.Candidate.SingleOrDefault(c => c.Id == candidateId);
                     var resume = _context.Resume.FirstOrDefault(c => c.ApplicationId == id);
 
-                    if (customObj.nationality != candidate.nationality || customObj.IdProofTypeId != candidate.IdProofTypeId || customObj.IdentificationNo != candidate.IdentificationNo)
+                    var cand = _context.Candidate.FirstOrDefault(c => c.IdentificationNo == customObj.IdentificationNo && c.Id != candidateId);
+                    if (cand != null)
                     {
                         var responseFalse = new
                         {
                             success = false,
                             payload = new
                             {
-                                message = "You cannot Change Identification type or Identification Number"
+                                message = "This identification Number is already registered"
                             }
                         };
                         return StatusCode(200, responseFalse);
                     }
 
-                    var result = validateCandidate(customObj, candidateId);
+                    var result = validateCandidate(customObj, candidateId, "put");
                     if (!result.isValid)
                     {
                         var responseFalse = new
@@ -415,6 +420,7 @@ namespace Arms.Api.Controllers
                     candidate.Name = customObj.Name;
                     candidate.Email = customObj.Email;
                     candidate.Phone = customObj.Phone;
+                    candidate.IdentificationNo = customObj.IdentificationNo;
                     candidate.ModifiedBy = customObj.ModifiedBy;
                     _context.Candidate.Update(candidate);
                     _context.SaveChanges();

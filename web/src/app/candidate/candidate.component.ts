@@ -14,14 +14,13 @@ import { BufferToPdf } from '../utils/bufferToPdf';
 import { NgbModal, NgbModalRef, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from 'src/app/reusable-components/modal/modal.component';
 import {  ActivatedRoute, Params } from "@angular/router";
-
+import { NgxSpinnerService } from "ngx-spinner";
 import { switchMap } from "rxjs/operators";
 @Component({
     selector: 'app-candidate',
     templateUrl: 'candidate.component.html',
     styleUrls: ['candidate.component.scss'],
     providers: [UrltoFile, BufferToPdf],
-
 })
 export class CandidateComponent  {
     //candidates: ICandidate[];
@@ -40,7 +39,8 @@ export class CandidateComponent  {
                 private _service:AppServicesService,
                 private router : Router,
                 private urltoFile: UrltoFile,
-                private modalService: NgbModal) { }
+                private modalService: NgbModal,
+                private spinnerService: NgxSpinnerService) { }
 
     ngOnInit():any{
          this.employeeId=this._service.tokenDecoder().Id;
@@ -51,6 +51,7 @@ export class CandidateComponent  {
          }
     }
     getCandidates(){
+    this.spinnerService.show()
     this.route.params
     .pipe(
         switchMap((params: Params) => {
@@ -59,6 +60,7 @@ export class CandidateComponent  {
         })
      )
        .subscribe((res) => { 
+            this.spinnerService.hide()
             this.candidates = res.payload.data
             this.columns = ["name", "email", "experience", "Job Position", "status"];
             if (this.candidates.length > 0){

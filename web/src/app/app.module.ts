@@ -1,3 +1,4 @@
+import { PascalToTitle } from './utils/pascalToTitleCase';
 import { RoundComponent } from './round/round.component';
 import { UpdateInterviewComponent } from './update-interview/update-interview.component';
 import { CandidateAssessmentFormComponent } from "./candidate-assessment/components/candidate-assessment-form/candidate-assessment-form.component";
@@ -50,6 +51,7 @@ import { CandidateDescriptionComponent } from "./candidate-assessment/components
 import { InterviewDetailComponent } from './interview-detail/interview-detail.component';
 import { UpdateCandidateComponent } from './update-candidate/update-candidate.component';
 import { NgxSpinnerService, NgxSpinnerModule } from "ngx-spinner";
+
 
 const isIE =
   window.navigator.userAgent.indexOf("MSIE ") > -1 ||
@@ -107,6 +109,7 @@ const isIE =
     StatsComponent,
     AnalyticsComponent,
     UpdateCandidateComponent,
+    PascalToTitle
   ],
   imports: [
     BrowserAnimationsModule,

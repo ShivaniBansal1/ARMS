@@ -9,6 +9,7 @@ import { Component, OnInit, ViewChild} from "@angular/core";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { ModalComponent } from "../reusable-components/modal/modal.component"
 import { Router,ActivatedRoute } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-candidate-form",
@@ -35,7 +36,8 @@ export class CandidateFormComponent implements OnInit {
     private CandidateService : CandidateService,
     private jobService: JobService,
     private route : ActivatedRoute,
-    private urltoFile : UrltoFile
+    private urltoFile : UrltoFile,
+    private spinnerService: NgxSpinnerService
 
   ) { 
     this.numbersInYears = Array(30).fill(0).map((x,i)=>i);
@@ -48,7 +50,7 @@ export class CandidateFormComponent implements OnInit {
     }
 
     loadJdData(){
-     
+      this.spinnerService.show()
       this.type = this.router.url.split("/")[1];
       if (this.type == "candidateForm"){
         var jobId 
@@ -58,7 +60,7 @@ export class CandidateFormComponent implements OnInit {
           }
         })
         this.service.getJdData(jobId).subscribe((res : IResponse)=>{
-         
+          this.spinnerService.hide();
           if (res.success == true){
             this.model.appliedForJdId = res.payload.data.code;
             this.model.appliedForPosition = res.payload.data.jobTitle;
@@ -75,6 +77,7 @@ export class CandidateFormComponent implements OnInit {
       else if (this.type == "progressTracker"){
         var applicationId 
         this.route.params.subscribe(params=>{
+          this.spinnerService.hide();
           if (params.candidateId){
             applicationId = params.candidateId.slice(7)
           }
@@ -192,11 +195,12 @@ export class CandidateFormComponent implements OnInit {
 }
 
   createApplication(application ){
+    this.spinnerService.show()
     let applicationObj = application.value;
     let isValid = this.validateApplication(applicationObj)
 
     let experience = this.model.experienceInYears + " years " + this.model.experienceInMonths + " months"
-    let jobId = (this.model.appliedForJdId)[6];
+    let jobId = (this.model.appliedForJdId).slice(6);
     var formData = new FormData();
     formData.append("name", this.model.name)
     formData.append("education", this.model.education)
@@ -214,11 +218,12 @@ export class CandidateFormComponent implements OnInit {
     if (isValid.success == true){
     
       this.CandidateService.createCandidate(formData).subscribe((res : IResponse)=>{
-        
+        this.spinnerService.hide()
         if (res != null){
           this.openModal(res)
           if (res.success == true){
             application.resetForm()
+            this.loadJdData()
             
           }
         } },

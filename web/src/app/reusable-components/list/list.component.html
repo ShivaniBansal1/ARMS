@@ -70,12 +70,12 @@
               </td>
               <td *ngFor="let columnName of columns;">
                 <ng-container [ngSwitch]="true">
-                  <div *ngSwitchCase="columnName=='name'">{{entry['candidate']?.name}}</div>
+                  <div *ngSwitchCase="columnName=='name'">{{entry['candidate']?.name | titlecase}}</div>
                   <div *ngSwitchCase="columnName=='email'">{{entry['candidate']?.email}}</div>
-                  <div *ngSwitchCase="columnName=='Job Position'">{{entry['job']?.jobTitle}}</div>
+                  <div *ngSwitchCase="columnName=='Job Position'">{{entry['job']?.jobTitle | titlecase}}</div>
                   <div *ngSwitchCase="columnName=='status'"
                     [ngClass]="{'shortlisted': entry.applicationStatusType.statusName=='Shortlisted', 'notShortlisted':entry.applicationStatusType.statusName=='NotShortlisted'}">
-                    {{entry['applicationStatusType']?.statusName }}</div>
+                    {{entry['applicationStatusType']?.statusName | pascalToTitle}}</div>
                   <div *ngSwitchCase="columnName=='roundDate'">{{entry[columnName]|date}}</div>
                   <div *ngSwitchCase="columnName=='jdObjectId'">{{entry[columnName]?.jdTitle}}</div>
                   <div *ngSwitchCase="columnName=='roundType'">{{entry['roundType']?.name}}</div>
@@ -116,6 +116,9 @@
         </div>
       </div>
     </div>
+    <!-- <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#934d4d" type="ball-spin-clockwise">
+      <p style="color: white;">Please Wait.</p>
+    </ngx-spinner> -->
   </div>
 
   <div class="row mobileView">

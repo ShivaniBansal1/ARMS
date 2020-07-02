@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from "@angular/core";
 import { IModelForPagination } from 'src/app/models/modelPagination.interface';
 import { NgbModal, NgbModalRef, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from 'src/app/reusable-components/modal/modal.component';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: "app-list",
   templateUrl: "./list.component.html",
@@ -50,7 +51,7 @@ export class ListComponent implements OnInit{
   @Output()
   emitShortlist: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private modalService : NgbModal,private _service : AppServicesService, private candidateService: CandidateService){
+  constructor(private spinnerService: NgxSpinnerService,private modalService : NgbModal,private _service : AppServicesService, private candidateService: CandidateService){
   }
 
   ngOnInit(){

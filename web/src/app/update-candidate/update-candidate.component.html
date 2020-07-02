@@ -2,7 +2,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="exampleModalLabel">
-              <b>Update Job Application</b>
+              <b>{{formType | titlecase}} Job Application</b>
             </h4>
           </div>
             <div class="modal-body" style="max-height: 30rem; overflow-y: auto;">
@@ -105,7 +105,7 @@
 
                 <div class="form-group">
                     <label for="nationality"><b> Nationality</b><span class="asterick">*</span></label>
-                    <input [readOnly]="formType == 'view'" [readOnly] type="text" name="nationality" class="form-control" 
+                    <input  readOnly type="text" name="nationality" class="form-control" 
                     [(ngModel)]="model.nationality"  placeholder="eg: Indian" #nationality="ngModel" id="nationality" 
                     [ngClass]="{ 'is-invalid': nationality.dirty && nationality.invalid}" required>
                     <div *ngIf="nationality.dirty && nationality.errors?.required" class="invalid-feedback">
@@ -121,7 +121,7 @@
                         class="form-control" id="idProofTypeId" [(ngModel)]="model.idProofTypeId" #idProofTypeId="ngModel" 
                         [ngClass]="{ 'is-invalid': (idProofTypeId.dirty && idProofTypeId.invalid) || (idProofTypeId.dirty && model.nationality=='Indian' && model.idProofTypeId != aadharId) }" required>
                         <option  class="select-css" value="none" selected disabled >Select an option</option>
-                        <option [disabled] = "formType == 'view'" class="select-css" [disabled] *ngFor="let idProof of idProofTypes" value={{idProof.id}} >{{idProof.name}}</option>
+                        <option disabled class="select-css" *ngFor="let idProof of idProofTypes" value={{idProof.id}} >{{idProof.name}}</option>
                         
                         </select>
 
