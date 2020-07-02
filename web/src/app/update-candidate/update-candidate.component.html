@@ -30,7 +30,7 @@
 
                 <div class="form-group">
                     <label for="Name"><b> Full Name </b><span class="asterick">*</span></label>
-                    <input type="text" name="name" class="form-control" 
+                    <input [readOnly]="formType == 'view'" type="text" name="name" class="form-control" 
                     [(ngModel)]="model.name"  placeholder="Name" #name="ngModel" id="name" 
                     [ngClass]="{ 'is-invalid': name.dirty && name.invalid}" required>
                     <div *ngIf="name.dirty && name.errors?.required" class="invalid-feedback">
@@ -40,7 +40,7 @@
 
                 <div class="form-group">
                     <label for="education"><b>Highest Qualification </b> <span class="asterick">*</span></label>
-                    <input type="text" name="education" class="form-control" 
+                    <input [readOnly]="formType == 'view'" type="text" name="education" class="form-control" 
                     [(ngModel)]="model.education"  placeholder="eg: BTech" #education="ngModel" id="education" 
                     [ngClass]="{ 'is-invalid': education.dirty && education.invalid}" required>
                     <div *ngIf="education.dirty && education.errors?.required" class="invalid-feedback">
@@ -50,7 +50,7 @@
 
                 <div class="form-group">
                     <label for="email"><b>Email Address</b> <span class="asterick">*</span></label>
-                    <input type="email" name="email" placeholder="eg: example@gmail.com" 
+                    <input [readOnly]="formType == 'view'" type="email" name="email" placeholder="eg: example@gmail.com" 
                     class="form-control" id="email" [(ngModel)]="model.email" #email="ngModel" 
                     pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" 
                     [ngClass]="{ 'is-invalid': email.dirty && email.invalid }" required>
@@ -64,7 +64,7 @@
 
                 <div class="form-group">
                     <label for="phone"><b> Phone </b><span class="asterick">*</span></label>
-                    <input type="text" name="phone" class="form-control" 
+                    <input [readOnly]="formType == 'view'" type="text" name="phone" class="form-control" 
                     [(ngModel)]="model.phone"  placeholder="" #phone="ngModel" id="phone" 
                     [ngClass]="{ 'is-invalid': phone.dirty && phone.invalid}" required>
                     <div *ngIf="phone.dirty && phone.errors?.required" class="invalid-feedback">
@@ -80,8 +80,8 @@
                         class="form-control" id="experienceInYears" [(ngModel)]="model.experienceInYears" #experienceInYears="ngModel" 
                         [ngClass]="{ 'is-invalid': experienceInYears.dirty && experienceInYears.invalid}" required>
                         <option class="select-css" value="0" selected disabled  >YYYY</option>
-                        <option class="select-css"  *ngFor="let number of numbersInYears" value={{number}} >{{number}}</option>
-                        <option class="select-css"  value="30+">30+</option>
+                        <option  [disabled] = "formType == 'view'" class="select-css"  *ngFor="let number of numbersInYears" value={{number}} >{{number}}</option>
+                        <option [disabled] = "formType == 'view'" class="select-css"  value="30+">30+</option>
                         </select>
 
                         <div *ngIf="experienceInYears.dirty" class="invalid-feedback">
@@ -93,11 +93,11 @@
                         <select type="text" name="experienceInMonths"                         placeholder="In months" 
                         class="form-control" id="experienceInMonths" [(ngModel)]="model.experienceInMonths" #experienceInMonths="ngModel" 
                         [ngClass]="{ 'is-invalid': experienceInMonths.dirty && experienceInMonths.invalid}" required>
-                        <option class="select-css" value="0" selected disabled >MM</option>
-                        <option class="select-css" *ngFor="let number of numbersInMonths" value={{number}} >{{number}}</option>
+                        <option  class="select-css" value="0" selected disabled >MM</option>
+                        <option [disabled] = "formType == 'view'" class="select-css" *ngFor="let number of numbersInMonths" value={{number}} >{{number}}</option>
                         </select>
                         <div *ngIf="experienceInMonths.dirty" class="invalid-feedback">  
-                        <div><i class="mdi mdi-alert-outline"></i>Experience in months is required</div>
+                        <div><i class="mdi mdi-alert-outline">s</i>Experience in months is required</div>
                         </div>
                     </div>
                     </div>
@@ -105,7 +105,7 @@
 
                 <div class="form-group">
                     <label for="nationality"><b> Nationality</b><span class="asterick">*</span></label>
-                    <input [readOnly] type="text" name="nationality" class="form-control" 
+                    <input [readOnly]="formType == 'view'" [readOnly] type="text" name="nationality" class="form-control" 
                     [(ngModel)]="model.nationality"  placeholder="eg: Indian" #nationality="ngModel" id="nationality" 
                     [ngClass]="{ 'is-invalid': nationality.dirty && nationality.invalid}" required>
                     <div *ngIf="nationality.dirty && nationality.errors?.required" class="invalid-feedback">
@@ -119,61 +119,59 @@
                     <div class="col-md-6">
                         <select type="text" name="idProofTypeId"                         
                         class="form-control" id="idProofTypeId" [(ngModel)]="model.idProofTypeId" #idProofTypeId="ngModel" 
-                        [ngClass]="{ 'is-invalid': (idProofTypeId.dirty && idProofTypeId.invalid) || (idProofTypeId.dirty && model.nationality=='Indian' && model.idProofTypeId != idProofTypes[0].id) || (idProofTypeId.dirty && model.nationality == null)}" required>
-                        <option class="select-css" value="none" selected disabled >Select an option</option>
-                        <option class="select-css" [disabled] *ngFor="let idProof of idProofTypes" value={{idProof.id}} >{{idProof.name}}</option>
+                        [ngClass]="{ 'is-invalid': (idProofTypeId.dirty && idProofTypeId.invalid) || (idProofTypeId.dirty && model.nationality=='Indian' && model.idProofTypeId != aadharId) }" required>
+                        <option  class="select-css" value="none" selected disabled >Select an option</option>
+                        <option [disabled] = "formType == 'view'" class="select-css" [disabled] *ngFor="let idProof of idProofTypes" value={{idProof.id}} >{{idProof.name}}</option>
                         
                         </select>
 
                         <div *ngIf="idProofTypeId.dirty && idProofTypeId.invalid" class="invalid-feedback">  
                         <div><i class="mdi mdi-alert-outline"></i>ID type is required</div>
                         </div>
-                        <div *ngIf="(idProofTypeId.dirty && model.nationality=='Indian' && model.idProofTypeId != idProofTypes[0].id)" class="invalid-feedback">  
+                        <div *ngIf="(idProofTypeId.dirty && model.nationality=='Indian' && model.idProofTypeId != aadharId)" class="invalid-feedback">  
                         <div><i class="mdi mdi-alert-outline"></i>If you're Indian select Adhar Card</div>
                         </div>
 
-                        <div *ngIf="(idProofTypeId.dirty && model.nationality == null)" class="invalid-feedback">  
-                        <div><i class="mdi mdi-alert-outline"></i>First Select Nationality</div>
-                        </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <input [readOnly] type="text" name="identificationNo"  
-                        class="form-control" id="identificationNo" [(ngModel)]="model.identificationNo" #identificationNo="ngModel"
-                        [ngClass]="{ 'is-invalid': (identificationNo.dirty && identificationNo.invalid) || (identificationNo.dirty && model.nationality == null)}" required>
-
+                    <div *ngIf="model.idProofTypeId==aadharId" class="col-md-6">
+                        <input  [readOnly]="formType == 'view'" type="text" name="identificationNo"  
+                        class="form-control" id="identificationNo"  [(ngModel)]="model.identificationNo" #identificationNo="ngModel" pattern="^\d{4}\s\d{4}\s\d{4}$"
+                        [ngClass]="{ 'is-invalid': (identificationNo.dirty && identificationNo.invalid)}" required>
+        
                         <div *ngIf="identificationNo.dirty && identificationNo.errors?.required" class="invalid-feedback">
-                        <div><i class="mdi mdi-alert-outline"></i>Identification No is required</div>
+                          <div><i class="mdi mdi-alert-outline"></i>Identification No is required</div>
                         </div>
-                        <div *ngIf="identificationNo.dirty && identificationNo.errors?.pattern" class="invalid-feedback">
-                        <div><i class="mdi mdi-alert-outline"></i>Enter valid Identification Number</div>
+                        <div *ngIf="model.idProofTypeId==aadharId && identificationNo.dirty && identificationNo.errors?.pattern" class="invalid-feedback">
+                          <div><i class="mdi mdi-alert-outline"></i>Enter valid Aadhar Card Number</div>
                         </div>
-                        <div *ngIf="(identificationNo.dirty && model.nationality == null)" class="invalid-feedback">  
-                        <div><i class="mdi mdi-alert-outline"></i>First Select Nationality</div>
+                      </div>
+        
+                      <div *ngIf="model.idProofTypeId==panId" class="col-md-6">
+                        <input  [readOnly]="formType == 'view'" type="text" name="identificationNo"  
+                        class="form-control" id="pan" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"  [(ngModel)]="model.identificationNo" #pan="ngModel"
+                        [ngClass]="{ 'is-invalid': (pan.dirty && pan.invalid)}" required>
+        
+                        <div *ngIf="pan.dirty && pan.errors?.required" class="invalid-feedback">
+                          <div><i class="mdi mdi-alert-outline"></i>Identification No is required</div>
                         </div>
-                    </div>
+                        <div *ngIf="pan.dirty && pan.errors?.pattern" class="invalid-feedback">
+                          <div><i class="mdi mdi-alert-outline"></i>Enter valid Pan Card Number</div>
+                        </div>
+                      </div>
+        
                 </div>
                 </div>
 
                 <div class="form-group">
                     <label><b>Resume</b><span class="asterick">*</span></label>
-                    <!-- <div  class="input-group  col-xs-12">           
-                    <input type="file" accept=".pdf, .doc" name="file" id="file" class="form-control"
-                    ngModel #file="ngModel" [(ngModel)]="model.cvName"
-                    (change) = "uploadResume($event)"
-                    [ngClass]="{ 'is-invalid': file.dirty && file.invalid}" required>
-                    <div *ngIf="file.dirty  && file.errors?.required" class="invalid-feedback">
-                        <div><i class="mdi mdi-alert-outline"></i>Resume is required</div>
-                    </div>
-                    </div> -->
-
                     <div  class="input-group col-xs-12"> 
                     <a (click)="openResume()" ><i class="far fa-file-pdf"></i>  {{model.cvName}}</a>
                     </div>
                 </div>   
 
-                <div class="d-flex flex-row-reverse" >
-                    <button type="submit" [disabled]="f.pristine || f.invalid" class="btn btn-gradient-danger mr-2" 
+                <div *ngIf="formType=='update'" class="d-flex flex-row-reverse" >
+                    <button type="submit" [disabled]="f.pristine || f.invalid || (idProofTypeId.dirty && model.nationality=='Indian' && model.idProofTypeId != aadharId)" class="btn btn-gradient-danger mr-2" 
                     ><b>Update</b></button>
                     <button class="btn btn-light" (click)="closeUpdateModal()"><b>Cancel</b></button>
                 </div>

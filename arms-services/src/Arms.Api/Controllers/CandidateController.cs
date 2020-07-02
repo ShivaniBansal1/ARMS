@@ -227,7 +227,7 @@ namespace Arms.Api.Controllers
             {
                 var res = new
                 {
-                    isValid = true,
+                    isValid = false,
                     message = "You cannot register before 6 months"
                 };
                 return res;
@@ -237,7 +237,7 @@ namespace Arms.Api.Controllers
             {
                 var res = new
                 {
-                    isValid = true,
+                    isValid = false,
                     message = "You've already registered for this Job Position"
                 };
                 return res;

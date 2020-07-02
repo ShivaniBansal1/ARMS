@@ -11,7 +11,7 @@ only screen and (max-width: 1220px),
     }    
 }
 
-.mdi-pencil, .mdi-delete{
+.mdi-pencil, .mdi-delete, .mdi-eye{
     color: #212529;
     font-size: large;
     padding-left: 0em;
@@ -19,7 +19,7 @@ only screen and (max-width: 1220px),
 
 }
 
-.mdi-pencil:hover, .mdi-delete:hover, .fa:hover{
+.mdi-pencil:hover, .mdi-delete:hover, .fa:hover, .mdi-eye:hover{
     color: #FC4C02;
 }
 

@@ -109,6 +109,7 @@ const isIE =
     UpdateCandidateComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     FileUploadModule,
     MDBBootstrapModule.forRoot(),
     ReactiveFormsModule,
