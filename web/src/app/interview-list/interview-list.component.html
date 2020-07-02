@@ -3,6 +3,7 @@
           <div class="main-panel">
             <div class="page-header">
               <h4><b>Interview Listing</b></h4>
+              <button class="float-right btn btn-gradient-danger btn-fw" id="addbtn" routerLink="/admin/interview/create">Add <i class="mdi mdi-file-plus"></i> </button>
             </div>
             <div class="search-field d-md-block">
               <form class="h-100" action="#">
@@ -49,9 +50,15 @@
                             (click)="appliedCandidates(interview?.jobId)"
                             ></i>
                            </a>
-
-                </div>
-              </div>
+                           <a class="w3-bar-item w3-button">
+                            <i class="mdi mdi-view-array float-right"
+                            [routerLink]="['round', interview?.id, 1]"
+                            ></i>
+                          </a>
+                          
+                        </div>
+                      </div>
+                      
               <!--large screens-->
               <i class="mdi mdi-view-array float-right d-none d-lg-block"
                 [routerLink]="['round', interview?.id, 1]"></i>
@@ -62,13 +69,20 @@
             </h5>
 
             <h6 class="font-weight-normal">
+              <b> Job Title </b>{{ interview.jobDescription.jobTitle}}
+            </h6>
+            <h6 class="font-weight-normal">
               <b> Date : </b>{{ interview.date | date }}
             </h6>
             <h6 class="font-weight-normal">
               <b> Venue : </b>{{interview.venue}}
             </h6>
             <h6 class="font-weight-normal">
-              <b> No Of Rounds : </b>{{interview.noOfRounds}}
+             <b> No Of Rounds : </b>{{interview.noOfRounds}}
+             <label *ngIf="datecheck(interview.date)==1"
+                class="badge badge-gradient-danger float-right mb-0">CLOSED</label>
+             <label *ngIf="datecheck(interview.date)==0"
+                class="badge badge-gradient-success float-right mb-0">OPEN</label>
             </h6>
           </div>
         </div>

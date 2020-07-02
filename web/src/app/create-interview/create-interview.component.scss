@@ -58,6 +58,8 @@ button {
 
 .top {
   padding-top: 2rem;
+  display: flex;
+  flex-flow: row;
 }
 .asterick {
   color: rgb(201, 5, 5);
@@ -80,3 +82,4 @@ select::-ms-expand {
   background-color: transparent;
   border: 0;
 }
+

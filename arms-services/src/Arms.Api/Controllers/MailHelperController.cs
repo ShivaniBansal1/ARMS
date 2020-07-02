@@ -41,7 +41,6 @@ namespace Arms.Api.Controllers
 
         public void MailFunction( string emailHtmlBody,string[] emailList)
         {
-
             var credentials = new System.Net.NetworkCredential("balanideepanshu92@gmail.com", "BaBlI023#");
 
             // Mail message

@@ -125,7 +125,7 @@ namespace Arms.Api.Controllers
 		[HttpGet("{id}")]
         [AllowAnonymous]
 		public IActionResult GetInterview(int id, int append=0)
-        {
+		{
 			var interview = _context.Interview.Include(c => c.JobDescription).SingleOrDefault(c => c.Id == id);
 			try
 			{
@@ -499,23 +499,23 @@ namespace Arms.Api.Controllers
                 return round;
            
 
-      }
-        //function which returns list of filtered interviews
+	  }
+		//function which returns list of filtered interviews
 
-        public List<Interview>filterInterviews(int employeeId)
-        {
-            var interviewer = _context.Interviewer.Where(c => c.EmployeeId == employeeId);
+		public List<Interview>filterInterviews(int employeeId)
+		{
+			var interviewer = _context.Interviewer.Where(c => c.EmployeeId == employeeId);
 
-            List<Interview> interviewsListing = new List<Interview>();
+			List<Interview> interviewsListing = new List<Interview>();
 
-            foreach (var inte in interviewer)
-            {
-                Interview interviewTo = _context.Interview.FirstOrDefault(c => c.JobId == inte.JobId);
-                interviewsListing.Add(interviewTo);
-            }
+			foreach (var inte in interviewer)
+			{
+				Interview interviewTo = _context.Interview.FirstOrDefault(c => c.JobId == inte.JobId);
+				interviewsListing.Add(interviewTo);
+			}
 
-            return interviewsListing;
-        }
+			return interviewsListing;
+		}
 
     }
     //Email Class is made seperate to pass 3 different objects
@@ -525,11 +525,11 @@ namespace Arms.Api.Controllers
         {
 
 
-        }
-        public string GenerateEmailBody(JobDescription jdObject, Interview interview, Arms.Domain.Entities.Application app)
-        {
+		}
+		public string GenerateEmailBody(JobDescription jdObject, Interview interview, Arms.Domain.Entities.Application app)
+		{
 
-            string output = @"<html>
+			string output = @"<html>
 		   <head>    
 			  <style type=""text/css"">
 			   </style>
@@ -573,7 +573,7 @@ namespace Arms.Api.Controllers
 		  <td> B-9, Block B, Sector 3, Noida, Uttar Pradesh 201301</td>
 		 </tr>
 		</table>" +
-     @"<a href = 'http://localhost:4200/progressTracker/" + app.Candidate.Code + "'>" + @"Please click here to track your progress</a>
+	 @"<a href = 'http://localhost:4200/progressTracker/" + app.Candidate.Code + "'>" + @"Please click here to track your progress</a>
 		<br>
 		 <em>This is automatically generated email,please do not reply</em>
 		<p>Thanks</p>
@@ -586,5 +586,5 @@ namespace Arms.Api.Controllers
 				return output;
 			}
 
-    }
+	}
 }

@@ -59,7 +59,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let entry of data ; let i = index"
-              [ngClass]="{'notShortlistedback': entry.applicationStatusType.statusName=='NotShortlisted', 'shortlistedBack': entry.applicationStatusType.statusName=='Shortlisted'}">
+              [ngClass]="{'notShortlistedback': entry.applicationStatusType?.statusName=='NotShortlisted', 'shortlistedBack': entry.applicationStatusType?.statusName=='Shortlisted'}">
 
               <td *ngIf="role=='Admin' && title=='candidate'" class="form-check form-check-flat">
                 <label class="form-check-label">

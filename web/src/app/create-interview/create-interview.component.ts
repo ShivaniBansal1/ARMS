@@ -1,3 +1,4 @@
+import { jobDescription } from './../models/jobDescription.interface';
 import { EnvVarService } from './../utilities/env-var.service';
 import { MinDateService } from "./../utilities/min-date.service";
 import { InterviewService } from "./../services/interview.service";
@@ -25,11 +26,12 @@ export class CreateInterviewComponent implements OnInit {
     private _env: EnvVarService
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {  
     this.getLocation();
     this.getRoundTypes();
+    this.getJobDescriptions();
     this.minimumDate = this.minDateService.setMinimumDate();
-  }
+   }
   minimumDate: string;
   interview: any = {};
   interviewObj: any = {};
@@ -39,6 +41,8 @@ export class CreateInterviewComponent implements OnInit {
 
   Location: any[] = [];
 
+  Job: any[] = [];
+
   number: number;
   location: string;
 
@@ -47,17 +51,24 @@ export class CreateInterviewComponent implements OnInit {
   }
 
   getLocation() {
-    this.service.getLocation().subscribe((res: any) => {
+    this.service.getLocation().subscribe((res: IResponse) => {
       this.Location = res.payload.data;
     });
   }
 
   getRoundTypes() {
-    this.service.getRoundTypes().subscribe((res: any) => {
+    this.service.getRoundTypes().subscribe((res: IResponse) => {
       this.RoundType = res.payload.data;
     });
   }
-  i: any;
+
+ getJobDescriptions(){
+   this.service.getAllJobs().subscribe((res: IResponse) => {
+     this.Job = res.payload.data;
+     console.log(this.Job)
+   })
+ }
+
   createInterview(interview: any) {
     let round = [];
     for (let index = 0; index < this.number; index++) {
