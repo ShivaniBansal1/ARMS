@@ -1,3 +1,4 @@
+import { CreateInterviewComponent } from './create-interview/create-interview.component';
 import { RoundComponent } from './round/round.component';
 import { UpdateInterviewComponent } from './update-interview/update-interview.component';
 import { CandidateAssessmentFormComponent } from "./candidate-assessment/components/candidate-assessment-form/candidate-assessment-form.component";
@@ -17,7 +18,6 @@ import { FileUploadModule } from "ng2-file-upload";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { CandidateFormComponent } from "./candidate-form/candidate-form.component";
-import { CreateInterviewComponent } from "./create-interview/create-interview.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { EmployeeFormComponent } from "./employee/components/employee-form/employee-form.component";
 import { EmployeeUploadComponent } from "./employee/components/employee-upload/employee-upload.component";

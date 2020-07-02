@@ -1,3 +1,4 @@
+import { CreateInterviewComponent } from './../create-interview/create-interview.component';
 import { UpdateInterviewComponent } from "./../update-interview/update-interview.component";
 import { ScheduleInterviewComponent } from "./../schedule-interview/schedule-interview.component";
 import { EmailListModalComponent } from "./../email-list-modal/email-list-modal.component";
@@ -13,7 +14,6 @@ import {
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { ModalComponent } from "src/app/reusable-components/modal/modal.component";
 import { HttpErrorResponse } from "@angular/common/http";
-import { CreateInterviewComponent } from "../create-interview/create-interview.component";
 import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: "app-interview-list",
@@ -35,6 +35,13 @@ export class InterviewListComponent implements OnInit {
 
   ngOnInit() {
     this.loadInterviews();
+  }
+
+  datecheck(date) {
+    const currentDate = new Date().toISOString();
+    if (date <= currentDate) {
+      return 1;
+    } else { return 0; }
   }
 
   loadInterviews() {
